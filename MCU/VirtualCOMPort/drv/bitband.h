@@ -1,20 +1,20 @@
 #ifndef __BITBAND_H__
 #define __BITBAND_H__
 
-// Î»´ø²Ù×÷
+// ä½å¸¦æ“ä½œ
 #define BITBAND(addr, bitn)     (((addr) & 0xF0000000) + 0x2000000 + (((addr) & 0xFFFFF) << 5) + ((bitn) << 2))
 #define MEM_ADDR(addr)          *((volatile unsigned long *)(addr))
 #define BIT_ADDR(addr, bitn)    MEM_ADDR(BITBAND(addr, bitn))
 
-// Î»´ø²Ù×÷SRAM¼ò»¯°æ£¬Ìá¸ßĞ§ÂÊ
+// ä½å¸¦æ“ä½œSRAMç®€åŒ–ç‰ˆï¼Œæé«˜æ•ˆç‡
 #define BITBAND_SRAM(addr, bitn)    (0x22000000 + (((addr) & 0xFFFFF) << 5) + ((bitn) << 2))
 #define BIT_ADDR_SRAM(addr, bitn)   MEM_ADDR(BITBAND_SRAM(addr, bitn))
 
-// Î»´ø²Ù×÷GPIO¼ò»¯°æ£¬Ìá¸ßĞ§ÂÊ
+// ä½å¸¦æ“ä½œGPIOç®€åŒ–ç‰ˆï¼Œæé«˜æ•ˆç‡
 #define BITBAND_IO(addr, bitn)      (0x42000000 + (((addr) & 0xFFFFF) << 5) + ((bitn) << 2))
 #define BIT_ADDR_IO(addr, bitn)     MEM_ADDR(BITBAND_IO(addr, bitn))
 
-// IO¿ÚµØÖ·Ó³Éä
+// IOå£åœ°å€æ˜ å°„
 #define GPIOA_ODR_Addr      (GPIOA_BASE + 12) //0x4001080C 
 #define GPIOB_ODR_Addr      (GPIOB_BASE + 12) //0x40010C0C 
 #define GPIOC_ODR_Addr      (GPIOC_BASE + 12) //0x4001100C 
@@ -31,8 +31,8 @@
 #define GPIOF_IDR_Addr      (GPIOF_BASE + 8) //0x40011A08 
 #define GPIOG_IDR_Addr      (GPIOG_BASE + 8) //0x40011E08 
 
-// IO¿Ú²Ù×÷
-// È·±£nµÄÖµµÈÓÚ0~15
+// IOå£æ“ä½œ
+// ç¡®ä¿nçš„å€¼ç­‰äº0~15
 #define PAO(n)              BIT_ADDR_IO(GPIOA_ODR_Addr, n)
 #define PAI(n)              BIT_ADDR_IO(GPIOA_IDR_Addr, n)
 

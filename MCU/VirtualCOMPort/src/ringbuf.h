@@ -29,10 +29,10 @@ SOFTWARE.
 #include "base.h"
 
 typedef struct ring_buffer {
-    void *buffer;   //»º³åÇø
-    u32 size;       //´óĞ¡
-    u32 in;         //Èë¿ÚÎ»ÖÃ
-    u32 out;        //³ö¿ÚÎ»ÖÃ
+    void *buffer;   //ç¼“å†²åŒº
+    u32 size;       //å¤§å°
+    u32 in;         //å…¥å£ä½ç½®
+    u32 out;        //å‡ºå£ä½ç½®
 } ringbuf_t;
 
 u32 ringbuf_init(ringbuf_t *ring_buf, void *buffer, u32 size);

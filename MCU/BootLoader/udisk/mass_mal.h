@@ -3,20 +3,20 @@
 
 #include "base.h"
 
-// ´ò¿ªºêÊ±Ê¹ÓÃÍâ²¿SPI Flash
+// æ‰“å¼€å®æ—¶ä½¿ç”¨å¤–éƒ¨SPI Flash
 //#define MAL_SPI_FLASH
 
 #define MAL_OK      0
 #define MAL_FAIL    1
 
-// ¶¨Òå´æ´¢Éè±¸Êý
+// å®šä¹‰å­˜å‚¨è®¾å¤‡æ•°
 #ifdef MAL_SPI_FLASH
 #define MAX_LUN     2
 #else
 #define MAX_LUN     1
 #endif // MAL_SPI_FLASH
 
-// ¶¨ÒåÄÚ²¿Flash¿ÉÓÃ´óÐ¡£¬±£Áô16K×÷Îª³ÌÐò¿Õ¼ä
+// å®šä¹‰å†…éƒ¨Flashå¯ç”¨å¤§å°ï¼Œä¿ç•™16Kä½œä¸ºç¨‹åºç©ºé—´
 #ifdef MCU_STM32L151C8
 #define INTER_FLASH_PAGE_SIZE       (256)
 #define INTER_FLASH_PAGE_COUNT      (256 - 64)
@@ -24,28 +24,28 @@
 #endif //MCU_STM32L151C8
 #ifdef MCU_STM32F103C8
 #define INTER_FLASH_PAGE_SIZE       (1024)
-#define INTER_FLASH_PAGE_COUNT      (128 - 16)  // Ê¹ÓÃºóÃæµÄ64kÒþ²Ø¿Õ¼ä
+#define INTER_FLASH_PAGE_COUNT      (128 - 16)  // ä½¿ç”¨åŽé¢çš„64kéšè—ç©ºé—´
 #define INTER_FLASH_BASE_ADDR       (0x08000000 + 1024 * 16)
 #endif //MCU_STM32L151C8
 
-// ×î´ó´æ´¢Éè±¸¿é´óÐ¡£¬±ØÐëÎªBULK_MAX_PACKET_SIZE(64)ÕûÊý±¶£¬ÖÁÉÙ512
+// æœ€å¤§å­˜å‚¨è®¾å¤‡å—å¤§å°ï¼Œå¿…é¡»ä¸ºBULK_MAX_PACKET_SIZE(64)æ•´æ•°å€ï¼Œè‡³å°‘512
 #ifdef MAL_SPI_FLASH
-// ÕâÀïÈ¡4096ÊÇÊÊÓ¦SPI Flash£¬Ö»ÓÃÆäËüÉè±¸È¡½ÏÐ¡µÄÖµ¿É¼õÐ¡SRAMÊ¹ÓÃ
+// è¿™é‡Œå–4096æ˜¯é€‚åº”SPI Flashï¼Œåªç”¨å…¶å®ƒè®¾å¤‡å–è¾ƒå°çš„å€¼å¯å‡å°SRAMä½¿ç”¨
 #define MAL_BLOCK_SIZE_MAX      4096
 #else
-// Ö»Ê¹ÓÃÄÚ²¿FlashÊ±¾Í¶¨ÒåÎªÒ³´óÐ¡
+// åªä½¿ç”¨å†…éƒ¨Flashæ—¶å°±å®šä¹‰ä¸ºé¡µå¤§å°
 #define MAL_BLOCK_SIZE_MAX      INTER_FLASH_PAGE_SIZE
 #endif //MAL_SPI_FLASH
 
-// ±£Ö¤¿é´óÐ¡>=512
+// ä¿è¯å—å¤§å°>=512
 #if MAL_BLOCK_SIZE_MAX < 512
 #undef MAL_BLOCK_SIZE_MAX
 #define MAL_BLOCK_SIZE_MAX      512
 #endif //MAL_BLOCK_SIZE_MAX
 
-extern uint32_t Mass_Block_Size[MAX_LUN];      // ¿é´óÐ¡
-extern uint32_t Mass_Block_Count[MAX_LUN];     // ¿éÊýÄ¿
-extern uint32_t Mass_Memory_Size[MAX_LUN];     // ¿Õ¼ä´óÐ¡
+extern uint32_t Mass_Block_Size[MAX_LUN];      // å—å¤§å°
+extern uint32_t Mass_Block_Count[MAX_LUN];     // å—æ•°ç›®
+extern uint32_t Mass_Memory_Size[MAX_LUN];     // ç©ºé—´å¤§å°
 
 uint16_t MAL_Init(uint8_t lun);
 uint16_t MAL_GetStatus(uint8_t lun);

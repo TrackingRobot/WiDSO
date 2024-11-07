@@ -44,7 +44,7 @@
 static __IO uint32_t Block_Read_count = 0;
 static __IO uint32_t Block_offset = 0;
 static __IO uint32_t Block_Write_count = 0;
-static uint8_t Data_Buffer[MAL_BLOCK_SIZE_MAX];    // Êı¾İ»º³åÇø£¬±ØĞë>=´æ´¢Éè±¸¿é´óĞ¡
+static uint8_t Data_Buffer[MAL_BLOCK_SIZE_MAX];    // æ•°æ®ç¼“å†²åŒºï¼Œå¿…é¡»>=å­˜å‚¨è®¾å¤‡å—å¤§å°
 static uint8_t TransferState = TXFR_IDLE;
 
 /* Extern variables ----------------------------------------------------------*/
@@ -76,7 +76,7 @@ void Read_Memory(uint8_t lun, uint32_t Memory_Offset, uint32_t Transfer_Length)
     }
 
     if (TransferState == TXFR_ONGOING) {
-        // »º³åÇø¿ÕÊ±´Ó´æ´¢Éè±¸¶ÁÈ¡Êı¾İ
+        // ç¼“å†²åŒºç©ºæ—¶ä»å­˜å‚¨è®¾å¤‡è¯»å–æ•°æ®
         if (0 == Block_Read_count) {
             MAL_Read(lun, Offset, Data_Buffer, Mass_Block_Size[lun]);
             Block_Read_count = Mass_Block_Size[lun];
@@ -132,7 +132,7 @@ void Write_Memory(uint8_t lun, uint32_t Memory_Offset, uint32_t Transfer_Length)
         W_Offset += Bulk_Data_Len;
         W_Length -= Bulk_Data_Len;
 
-        // »º³åÇøÂúÊ±Ğ´ÈëÊı¾İµ½´æ´¢Éè±¸
+        // ç¼“å†²åŒºæ»¡æ—¶å†™å…¥æ•°æ®åˆ°å­˜å‚¨è®¾å¤‡
         if (0 == (W_Length % Mass_Block_Size[lun])) {
             Block_Write_count = 0;
             MAL_Write(lun, W_Offset - Mass_Block_Size[lun], Data_Buffer, Mass_Block_Size[lun]);

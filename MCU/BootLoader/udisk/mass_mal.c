@@ -1,5 +1,5 @@
 /*
- * ´æ´¢Æ÷Çı¶¯Ä£¿é for stm32f103c8 & stm32l151c8
+ * å­˜å‚¨å™¨é©±åŠ¨æ¨¡å— for stm32f103c8 & stm32l151c8
  * eleqian 2014-10-23
  */
 
@@ -10,20 +10,20 @@
 #include "spi_flash.h"
 #endif // MAL_SPI_FLASH
 
-// Éè±¸ĞÅÏ¢
-uint32_t Mass_Block_Size[MAX_LUN];      // ¿é´óĞ¡
-uint32_t Mass_Block_Count[MAX_LUN];     // ¿éÊıÄ¿
-uint32_t Mass_Memory_Size[MAX_LUN];     // ¿Õ¼ä´óĞ¡
+// è®¾å¤‡ä¿¡æ¯
+uint32_t Mass_Block_Size[MAX_LUN];      // å—å¤§å°
+uint32_t Mass_Block_Count[MAX_LUN];     // å—æ•°ç›®
+uint32_t Mass_Memory_Size[MAX_LUN];     // ç©ºé—´å¤§å°
 
 #ifdef MCU_STM32F103C8
-// ÄÚ²¿Flash´ÅÅÌÎÄ¼şÏµÍ³¿Õ¼ä
-// »ùÓÚRAM¿ÉÒÔ±ÜÃâÊ¹ÓÃFlash£¬Í¬Ê±±£Ö¤Ã¿´Î¸üĞÂbin¶¼ÔÚ¹Ì¶¨Î»ÖÃ
-// ¿Õ¼ä·ÖÅä£º1kÒıµ¼ÉÈÇø(Ö»Ê¹ÓÃÇ°512Byte) + 1k FAT±í+ 1k¸ùÄ¿Â¼
+// å†…éƒ¨Flashç£ç›˜æ–‡ä»¶ç³»ç»Ÿç©ºé—´
+// åŸºäºRAMå¯ä»¥é¿å…ä½¿ç”¨Flashï¼ŒåŒæ—¶ä¿è¯æ¯æ¬¡æ›´æ–°binéƒ½åœ¨å›ºå®šä½ç½®
+// ç©ºé—´åˆ†é…ï¼š1kå¼•å¯¼æ‰‡åŒº(åªä½¿ç”¨å‰512Byte) + 1k FATè¡¨+ 1kæ ¹ç›®å½•
 static uint8_t Mass_FAT[1024 * 3];
 
-// ÄÚ²¿Flash´ÅÅÌµÄÆô¶¯ÉÈÇø
-// ´ÅÅÌ²ÎÊı£ºÉÈÇø´óĞ¡1k£¬1¸öÒıµ¼ÉÈÇø£¬1¸öFAT±í£¬1¸ö¸ùÄ¿Â¼ÉÈÇø
-// ×Ü´óĞ¡115k£¬¿ÉÓÃ¿Õ¼ä115-3=112k
+// å†…éƒ¨Flashç£ç›˜çš„å¯åŠ¨æ‰‡åŒº
+// ç£ç›˜å‚æ•°ï¼šæ‰‡åŒºå¤§å°1kï¼Œ1ä¸ªå¼•å¯¼æ‰‡åŒºï¼Œ1ä¸ªFATè¡¨ï¼Œ1ä¸ªæ ¹ç›®å½•æ‰‡åŒº
+// æ€»å¤§å°115kï¼Œå¯ç”¨ç©ºé—´115-3=112k
 const unsigned char Mass_BootSector[512] = {
 	0xEB, 0x3C, 0x90, 0x4D, 0x53, 0x44, 0x4F, 0x53, 0x35, 0x2E, 0x30, 0x00, 0x04, 0x01, 0x01, 0x00, 
 	0x01, 0x20, 0x00, 0x73, 0x00, 0xF8, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -61,14 +61,14 @@ const unsigned char Mass_BootSector[512] = {
 #endif //MCU_STM32F103C8
 
 #ifdef MCU_STM32L151C8
-// ÄÚ²¿Flash´ÅÅÌÎÄ¼şÏµÍ³¿Õ¼ä
-// »ùÓÚRAM¿ÉÒÔ±ÜÃâÊ¹ÓÃFlash£¬Í¬Ê±±£Ö¤Ã¿´Î¸üĞÂbin¶¼ÔÚ¹Ì¶¨Î»ÖÃ
-// ¿Õ¼ä·ÖÅä£º512BÒıµ¼ÉÈÇø + 512B FAT±í+ 512B¸ùÄ¿Â¼
+// å†…éƒ¨Flashç£ç›˜æ–‡ä»¶ç³»ç»Ÿç©ºé—´
+// åŸºäºRAMå¯ä»¥é¿å…ä½¿ç”¨Flashï¼ŒåŒæ—¶ä¿è¯æ¯æ¬¡æ›´æ–°binéƒ½åœ¨å›ºå®šä½ç½®
+// ç©ºé—´åˆ†é…ï¼š512Bå¼•å¯¼æ‰‡åŒº + 512B FATè¡¨+ 512Bæ ¹ç›®å½•
 static uint8_t Mass_FAT[512 * 3];
 
-// ÄÚ²¿Flash´ÅÅÌµÄÆô¶¯ÉÈÇø
-// ´ÅÅÌ²ÎÊı£ºÉÈÇø´óĞ¡512B£¬1¸öÒıµ¼ÉÈÇø£¬1¸öFAT±í£¬1¸ö¸ùÄ¿Â¼ÉÈÇø
-// ×Ü´óĞ¡49.5k£¬¿ÉÓÃ¿Õ¼ä49.5-1.5=48k
+// å†…éƒ¨Flashç£ç›˜çš„å¯åŠ¨æ‰‡åŒº
+// ç£ç›˜å‚æ•°ï¼šæ‰‡åŒºå¤§å°512Bï¼Œ1ä¸ªå¼•å¯¼æ‰‡åŒºï¼Œ1ä¸ªFATè¡¨ï¼Œ1ä¸ªæ ¹ç›®å½•æ‰‡åŒº
+// æ€»å¤§å°49.5kï¼Œå¯ç”¨ç©ºé—´49.5-1.5=48k
 const unsigned char Mass_BootSector[512] = {
 	0xEB, 0x3C, 0x90, 0x4D, 0x53, 0x44, 0x4F, 0x53, 0x35, 0x2E, 0x30, 0x00, 0x02, 0x01, 0x01, 0x00, 
 	0x01, 0x10, 0x00, 0x63, 0x00, 0xF8, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -105,7 +105,7 @@ const unsigned char Mass_BootSector[512] = {
 };
 #endif //MCU_STM32L151C8
 
-// ´ÅÅÌ¾í±êÄ¿Â¼Ïî£¨"USB_BL"£©
+// ç£ç›˜å·æ ‡ç›®å½•é¡¹ï¼ˆ"USB_BL"ï¼‰
 static const uint8_t Mass_LabelEntry[32] = {
 	0x55, 0x53, 0x42, 0x5F, 0x42, 0x4C, 0x20, 0x20, 0x20, 0x20, 0x20, 0x08, 0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x5C, 0x7D, 0x2C, 0x45, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -113,8 +113,8 @@ static const uint8_t Mass_LabelEntry[32] = {
 
 /*-----------------------------------*/
 
-// ²Á³ıÄÚ²¿Flash
-// ²ÎÊı£º²Á³ıµØÖ·(±ØĞëÎªÒ³¿ªÊ¼µØÖ·)£¬²Á³ı´óĞ¡(±ØĞëÎªÒ³´óĞ¡ÕûÊı±¶)
+// æ“¦é™¤å†…éƒ¨Flash
+// å‚æ•°ï¼šæ“¦é™¤åœ°å€(å¿…é¡»ä¸ºé¡µå¼€å§‹åœ°å€)ï¼Œæ“¦é™¤å¤§å°(å¿…é¡»ä¸ºé¡µå¤§å°æ•´æ•°å€)
 uint16_t FLASH_If_Erase(uint32_t SectorAddress, uint32_t EraseLength)
 {
     uint16_t i;
@@ -130,13 +130,13 @@ uint16_t FLASH_If_Erase(uint32_t SectorAddress, uint32_t EraseLength)
     return MAL_OK;
 }
 
-// Ğ´ÄÚ²¿Flash
-// ²ÎÊı£ºĞ´µØÖ·£¬Ğ´ÄÚÈİÖ¸Õë£¬Ğ´×Ö½ÚÊı(±ØĞëÊÇ4µÄ±¶Êı)
-// ·µ»Ø£ºMAL_OK/MAL_FAIL
+// å†™å†…éƒ¨Flash
+// å‚æ•°ï¼šå†™åœ°å€ï¼Œå†™å†…å®¹æŒ‡é’ˆï¼Œå†™å­—èŠ‚æ•°(å¿…é¡»æ˜¯4çš„å€æ•°)
+// è¿”å›ï¼šMAL_OK/MAL_FAIL
 uint16_t FLASH_If_Write(uint32_t WriteAddress, const uint8_t *Writebuff, uint32_t DataLength)
 {
 #ifdef MCU_STM32L151C8
-#if 0   // ¿ìËÙĞ´Flash£¬µ«ĞèÒª²¿·Ö´úÂëÔÚSRAMÔËĞĞ
+#if 0   // å¿«é€Ÿå†™Flashï¼Œä½†éœ€è¦éƒ¨åˆ†ä»£ç åœ¨SRAMè¿è¡Œ
     __IO uint32_t *malPointer = (uint32_t *)Writebuff;
     __IO uint32_t *memPointer = (uint32_t *)WriteAddress;
     __IO uint32_t memBuffer[32]; // Temporary buffer holding data that will be written in a half-page space
@@ -205,9 +205,9 @@ uint16_t FLASH_If_Write(uint32_t WriteAddress, const uint8_t *Writebuff, uint32_
     return MAL_OK;
 }
 
-// ¶ÁÄÚ²¿Flash
-// ²ÎÊı£º¶ÁµØÖ·£¬Êı¾İ»º³åÇø£¬¶Á×Ö½ÚÊı
-// ·µ»Ø£ºMAL_OK
+// è¯»å†…éƒ¨Flash
+// å‚æ•°ï¼šè¯»åœ°å€ï¼Œæ•°æ®ç¼“å†²åŒºï¼Œè¯»å­—èŠ‚æ•°
+// è¿”å›ï¼šMAL_OK
 uint16_t FLASH_If_Read(uint32_t ReadAddress, uint8_t *Readbuff, uint32_t DataLength)
 {
     uint32_t idx = 0;
@@ -223,9 +223,9 @@ uint16_t FLASH_If_Read(uint32_t ReadAddress, uint8_t *Readbuff, uint32_t DataLen
 
 /*-----------------------------------*/
 
-// MAL²ã³õÊ¼»¯
-// ²ÎÊı£ºÉè±¸ĞòºÅ
-// ·µ»Ø£ºMAL_OK/MAL_FAIL
+// MALå±‚åˆå§‹åŒ–
+// å‚æ•°ï¼šè®¾å¤‡åºå·
+// è¿”å›ï¼šMAL_OK/MAL_FAIL
 uint16_t MAL_Init(uint8_t lun)
 {
     switch (lun) {
@@ -233,17 +233,17 @@ uint16_t MAL_Init(uint8_t lun)
 #ifdef MCU_STM32L151C8
         FLASH_Unlock();
         FLASH_ClearFlag(FLASH_FLAG_OPTVERRUSR);
-        // ¸´ÖÆÆô¶¯ÉÈÇøµ½RAM
+        // å¤åˆ¶å¯åŠ¨æ‰‡åŒºåˆ°RAM
         memcpy(&Mass_FAT[0x0], Mass_BootSector, sizeof(Mass_BootSector));
-        // Ìí¼Ó´ÅÅÌ¾í±êµ½Ä¿Â¼±í
+        // æ·»åŠ ç£ç›˜å·æ ‡åˆ°ç›®å½•è¡¨
         memcpy(&Mass_FAT[0x400], Mass_LabelEntry, sizeof(Mass_LabelEntry));
 #endif //MCU_STM32L151C8
 #ifdef MCU_STM32F103C8
         FLASH_Unlock();
         FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_PGERR | FLASH_FLAG_WRPRTERR);	
-        // ¸´ÖÆÆô¶¯ÉÈÇøµ½RAM
+        // å¤åˆ¶å¯åŠ¨æ‰‡åŒºåˆ°RAM
         memcpy(&Mass_FAT[0x0], Mass_BootSector, sizeof(Mass_BootSector));
-        // Ìí¼Ó´ÅÅÌ¾í±êµ½Ä¿Â¼±í
+        // æ·»åŠ ç£ç›˜å·æ ‡åˆ°ç›®å½•è¡¨
         memcpy(&Mass_FAT[0x800], Mass_LabelEntry, sizeof(Mass_LabelEntry));
 #endif //MCU_STM32F103C8
         break;
@@ -262,9 +262,9 @@ uint16_t MAL_Init(uint8_t lun)
     return MAL_OK;
 }
 
-// MAL²ãĞ´Êı¾İ
-// ²ÎÊı£ºÉè±¸ĞòºÅ£¬Ğ´µØÖ·£¬Êı¾İÖ¸Õë£¬Êı¾İ´óĞ¡
-// ·µ»Ø£ºMAL_OK/MAL_FAIL
+// MALå±‚å†™æ•°æ®
+// å‚æ•°ï¼šè®¾å¤‡åºå·ï¼Œå†™åœ°å€ï¼Œæ•°æ®æŒ‡é’ˆï¼Œæ•°æ®å¤§å°
+// è¿”å›ï¼šMAL_OK/MAL_FAIL
 uint16_t MAL_Write(uint8_t lun, uint32_t Memory_Offset, const uint8_t *Writebuff, uint16_t Transfer_Length)
 {
     switch (lun) {
@@ -290,9 +290,9 @@ uint16_t MAL_Write(uint8_t lun, uint32_t Memory_Offset, const uint8_t *Writebuff
     return MAL_OK;
 }
 
-// MAL²ã¶ÁÊı¾İ
-// ²ÎÊı£ºÉè±¸ĞòºÅ£¬¶ÁµØÖ·£¬Êı¾İ»º³åÇø£¬¶Á´óĞ¡
-// ·µ»Ø£ºMAL_OK/MAL_FAIL
+// MALå±‚è¯»æ•°æ®
+// å‚æ•°ï¼šè®¾å¤‡åºå·ï¼Œè¯»åœ°å€ï¼Œæ•°æ®ç¼“å†²åŒºï¼Œè¯»å¤§å°
+// è¿”å›ï¼šMAL_OK/MAL_FAIL
 uint16_t MAL_Read(uint8_t lun, uint32_t Memory_Offset, uint8_t *Readbuff, uint16_t Transfer_Length)
 {
     switch (lun) {
@@ -316,15 +316,15 @@ uint16_t MAL_Read(uint8_t lun, uint32_t Memory_Offset, uint8_t *Readbuff, uint16
     return MAL_OK;
 }
 
-// MAL²ã»ñÈ¡ĞÅÏ¢
-// ²ÎÊı£ºÉè±¸ĞòºÅ
-// ·µ»Ø£ºMAL_OK/MAL_FAIL
+// MALå±‚è·å–ä¿¡æ¯
+// å‚æ•°ï¼šè®¾å¤‡åºå·
+// è¿”å›ï¼šMAL_OK/MAL_FAIL
 uint16_t MAL_GetStatus(uint8_t lun)
 {
     switch (lun) {
     case 0:
 #if INTER_FLASH_PAGE_SIZE == 256
-        // FATÎÄ¼şÏµÍ³ÒªÇó×îĞ¡ÉÈÇø´óĞ¡Îª512
+        // FATæ–‡ä»¶ç³»ç»Ÿè¦æ±‚æœ€å°æ‰‡åŒºå¤§å°ä¸º512
         Mass_Block_Size[0] = INTER_FLASH_PAGE_SIZE * 2;
         Mass_Block_Count[0] = INTER_FLASH_PAGE_COUNT / 2;
 #else

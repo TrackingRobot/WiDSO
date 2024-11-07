@@ -146,12 +146,12 @@ void SCSI_ModeSense6_Cmd(uint8_t lun)
 
     if (lun == 0) {
         if (gDiskWriteProtect[0] != 0) {
-            Mode_Sense6_data[2] = 0x80;     // 写保护标志位
+            Mode_Sense6_data[2] = 0x80;     // 鍐欎繚鎶ゆ爣蹇椾綅
         }
     } else {
 #if MAX_LUN > 1
         if (gDiskWriteProtect[1] != 0) {
-            Mode_Sense6_data[2] = 0x80;     // 写保护标志位
+            Mode_Sense6_data[2] = 0x80;     // 鍐欎繚鎶ゆ爣蹇椾綅
         }
 #endif //MAX_LUN>1
     }

@@ -28,10 +28,10 @@ SOFTWARE.
 #include <string.h>
 #include "ringbuf.h"
 
-// ÅĞ¶ÏxÊÇ·ñÊÇ2µÄ´Î·½
+// åˆ¤æ–­xæ˜¯å¦æ˜¯2çš„æ¬¡æ–¹
 #define is_power_of_2(x) ((x) != 0 && (((x) & ((x) - 1)) == 0))
 
-// ³õÊ¼»¯»º³åÇø
+// åˆå§‹åŒ–ç¼“å†²åŒº
 u32 ringbuf_init(ringbuf_t *ring_buf, void *buffer, u32 size)
 {
     if (!is_power_of_2(size)) {
@@ -47,19 +47,19 @@ u32 ringbuf_init(ringbuf_t *ring_buf, void *buffer, u32 size)
     return TRUE;
 }
 
-// »º³åÇøÊı¾İµÄ³¤¶È
+// ç¼“å†²åŒºæ•°æ®çš„é•¿åº¦
 u32 ringbuf_use_len(const ringbuf_t *ring_buf)
 {
     return (ring_buf->in - ring_buf->out);
 }
 
-// ÅĞ¶Ï»º³åÇøÊÇ·ñÂú
+// åˆ¤æ–­ç¼“å†²åŒºæ˜¯å¦æ»¡
 u32 ringbuf_is_full(const ringbuf_t *ring_buf)
 {
     return (ring_buf->in - ring_buf->out == ring_buf->size);
 }
 
-// ´Ó»º³åÇøÖĞÈ¡Êı¾İ
+// ä»ç¼“å†²åŒºä¸­å–æ•°æ®
 u32 ringbuf_get(ringbuf_t *ring_buf, void *buffer, u32 size)
 {
     u32 len = 0;
@@ -72,7 +72,7 @@ u32 ringbuf_get(ringbuf_t *ring_buf, void *buffer, u32 size)
     memcpy((u8*)buffer + len, (u8*)ring_buf->buffer, size - len);
     ring_buf->out += size;
     
-    // bufferÖĞÃ»ÓĞÊı¾İ
+    // bufferä¸­æ²¡æœ‰æ•°æ®
     if (ring_buf->in == ring_buf->out) {
         ring_buf->in = ring_buf->out = 0;
     }
@@ -80,7 +80,7 @@ u32 ringbuf_get(ringbuf_t *ring_buf, void *buffer, u32 size)
     return size;
 }
 
-// Ïò»º³åÇøÖĞ´æÊı¾İ
+// å‘ç¼“å†²åŒºä¸­å­˜æ•°æ®
 u32 ringbuf_put(ringbuf_t *ring_buf, const void *buffer, u32 size)
 {
     u32 len = 0;
@@ -96,7 +96,7 @@ u32 ringbuf_put(ringbuf_t *ring_buf, const void *buffer, u32 size)
     return size;
 }
 
-// Ïò»º³åÇøÖĞ´æ×Ö½ÚÊı¾İ
+// å‘ç¼“å†²åŒºä¸­å­˜å­—èŠ‚æ•°æ®
 u32 ringbuf_putc(ringbuf_t *ring_buf, const u8 c)
 {
     if (ringbuf_is_full(ring_buf)) {

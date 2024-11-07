@@ -36,28 +36,28 @@ SOFTWARE.
 
 /*-----------------------------------*/
 
-// ÅĞ¶Ï°´¼üÊÇ·ñ°´ÏÂ
+// åˆ¤æ–­æŒ‰é”®æ˜¯å¦æŒ‰ä¸‹
 BOOL key_is_pressed(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     BOOL is_press = FALSE;
 
-    // ´ò¿ª°´¼ü¶Ë¿ÚÊ±ÖÓ
+    // æ‰“å¼€æŒ‰é”®ç«¯å£æ—¶é’Ÿ
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
     GPIO_DeInit(GPIOC);
     
-    // ³õÊ¼»¯KEY¶Ë¿Ú(PC13)
+    // åˆå§‹åŒ–KEYç«¯å£(PC13)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     
     delay_ms(10);
 
-    // KEY°´ÏÂÊ±ÎªµÍµçÆ½
+    // KEYæŒ‰ä¸‹æ—¶ä¸ºä½ç”µå¹³
     is_press = !GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
 
-    // ¸´Î»°´¼ü¶Ë¿Ú×´Ì¬
+    // å¤ä½æŒ‰é”®ç«¯å£çŠ¶æ€
     GPIO_DeInit(GPIOC);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, DISABLE);
 
@@ -70,7 +70,7 @@ int main(void)
 {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-    // disable JTAG£¬use SWD only
+    // disable JTAGï¼Œuse SWD only
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
     timebase_init();

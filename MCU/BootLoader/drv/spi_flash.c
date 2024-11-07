@@ -1,6 +1,6 @@
 /*
- * W25ºÍSST25ÏµÁĞSPI_Flashµ×²ãÇı¶¯º¯Êı for stm32f103c8 & stm32l151c8
- * ±ØĞëÔÚÍ·ÎÄ¼şÑ¡ÔñÆ÷¼şĞÍºÅ
+ * W25å’ŒSST25ç³»åˆ—SPI_Flashåº•å±‚é©±åŠ¨å‡½æ•° for stm32f103c8 & stm32l151c8
+ * å¿…é¡»åœ¨å¤´æ–‡ä»¶é€‰æ‹©å™¨ä»¶å‹å·
  * eleqian 2014-9-11
  */
 
@@ -24,16 +24,16 @@ void SPI_Flash_Init(void)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-    // ¹ØJTAG£¬½öÊ¹ÓÃSWD
+    // å…³JTAGï¼Œä»…ä½¿ç”¨SWD
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
-    // ÖØÓ³ÉäSPI1Òı½Å
+    // é‡æ˜ å°„SPI1å¼•è„š
     GPIO_PinRemapConfig(GPIO_Remap_SPI1, ENABLE);
 #endif //MCU_STM32F103C8
 #ifdef MCU_STM32L151C8
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 #endif //MCU_STM32L151C8
 
-    // ÅäÖÃSPIÒı½Å: SCK, MISO ºÍ MOSI
+    // é…ç½®SPIå¼•è„š: SCK, MISO å’Œ MOSI
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
 #ifdef MCU_STM32F103C8
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -56,7 +56,7 @@ void SPI_Flash_Init(void)
       GPIO_PinAFConfig(GPIOB, GPIO_PinSource5, GPIO_AF_SPI1);  
 #endif //MCU_STM32L151C8
 
-    // ÅäÖÃÆ¬Ñ¡: CS
+    // é…ç½®ç‰‡é€‰: CS
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
 #ifdef MCU_STM32F103C8
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -71,10 +71,10 @@ void SPI_Flash_Init(void)
     GPIO_Init(GPIOB, &GPIO_InitStructure);
     SPI_DeselectDevice(SPI_DEVICE_FLASH);
 
-    // Ê¹ÄÜSPI1Ê±ÖÓ
+    // ä½¿èƒ½SPI1æ—¶é’Ÿ
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1 , ENABLE);
 
-    // SPI1ÅäÖÃ
+    // SPI1é…ç½®
     SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
     SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
     SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
@@ -86,7 +86,7 @@ void SPI_Flash_Init(void)
     SPI_InitStructure.SPI_CRCPolynomial = 7;
     SPI_Init(SPI1, &SPI_InitStructure);
 
-    // Ê¹ÄÜSPI1
+    // ä½¿èƒ½SPI1
     SPI_Cmd(SPI1, ENABLE);
 }
 
@@ -395,8 +395,8 @@ void SPI_Flash_Write(uint32_t WriteAddr, const void *WriteBuffer, uint16_t_t Num
 #endif //SPI_FLASH_SST25
 
 #ifdef SPI_FLASH_W25
-// ÔÚÒ»Ò³(0~65535)ÄÚĞ´ÈëÉÙÓÚ256¸ö×Ö½ÚµÄÊı¾İ
-// ²ÎÊı£º¿ªÊ¼Ğ´ÈëµÄµØÖ·(24bit)£¬Êı¾İ´æ´¢Çø£¬ÒªĞ´ÈëµÄ×Ö½ÚÊı(×î´ó256£¬²»Ó¦¸Ã³¬¹ı¸ÃÒ³µÄÊ£Óà×Ö½ÚÊı)
+// åœ¨ä¸€é¡µ(0~65535)å†…å†™å…¥å°‘äº256ä¸ªå­—èŠ‚çš„æ•°æ®
+// å‚æ•°ï¼šå¼€å§‹å†™å…¥çš„åœ°å€(24bit)ï¼Œæ•°æ®å­˜å‚¨åŒºï¼Œè¦å†™å…¥çš„å­—èŠ‚æ•°(æœ€å¤§256ï¼Œä¸åº”è¯¥è¶…è¿‡è¯¥é¡µçš„å‰©ä½™å­—èŠ‚æ•°)
 void SPI_Flash_Write_Page(uint32_t WriteAddr, const void *WriteBuffer, uint16_t NumByteToWrite)
 {
     uint16_t i;
@@ -404,51 +404,51 @@ void SPI_Flash_Write_Page(uint32_t WriteAddr, const void *WriteBuffer, uint16_t 
 
     SPI_Flash_WriteEnable();                    //SET WEL
 
-    SPI_SelectDevice(SPI_DEVICE_FLASH);         //Ê¹ÄÜÆ÷¼ş
+    SPI_SelectDevice(SPI_DEVICE_FLASH);         //ä½¿èƒ½å™¨ä»¶
 
-    SPI_TransmitByte(SPI_FLASH_CMD_BP);         //·¢ËÍĞ´Ò³ÃüÁî
+    SPI_TransmitByte(SPI_FLASH_CMD_BP);         //å‘é€å†™é¡µå‘½ä»¤
 
-    // ·¢ËÍ24bitµØÖ·
+    // å‘é€24bitåœ°å€
     SPI_TransmitByte((uint8_t)((WriteAddr) >> 16));
     SPI_TransmitByte((uint8_t)((WriteAddr) >> 8));
     SPI_TransmitByte((uint8_t)WriteAddr);
 
-    // Ñ­»·Ğ´
+    // å¾ªç¯å†™
     for (i = 0; i < NumByteToWrite; i++) {
         SPI_TransmitByte(pBuffer[i]);
     }
 
-    SPI_DeselectDevice(SPI_DEVICE_FLASH);       //È¡ÏûÆ¬Ñ¡
+    SPI_DeselectDevice(SPI_DEVICE_FLASH);       //å–æ¶ˆç‰‡é€‰
 
-    SPI_Flash_WaitForWriteEnd();                //µÈ´ıĞ´Èë½áÊø
+    SPI_Flash_WaitForWriteEnd();                //ç­‰å¾…å†™å…¥ç»“æŸ
 }
 
-// Ğ´SPI FLASH
-// ±ØĞëÈ·±£ËùĞ´µÄµØÖ··¶Î§ÄÚµÄÊı¾İÈ«²¿Îª0XFF£¬·ñÔòÔÚ·Ç0XFF´¦Ğ´ÈëµÄÊı¾İ½«Ê§°Ü
-// ÔÚÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÖ¸¶¨³¤¶ÈµÄÊı¾İ£¬¾ßÓĞ×Ô¶¯»»Ò³¹¦ÄÜ£¬µ«ÊÇÒªÈ·±£µØÖ·²»Ô½½ç
-// ²ÎÊı£º¿ªÊ¼Ğ´ÈëµÄµØÖ·(24bit)£¬Êı¾İ´æ´¢Çø£¬ÒªĞ´ÈëµÄ×Ö½ÚÊı(×î´ó65535)
+// å†™SPI FLASH
+// å¿…é¡»ç¡®ä¿æ‰€å†™çš„åœ°å€èŒƒå›´å†…çš„æ•°æ®å…¨éƒ¨ä¸º0XFFï¼Œå¦åˆ™åœ¨é0XFFå¤„å†™å…¥çš„æ•°æ®å°†å¤±è´¥
+// åœ¨æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥æŒ‡å®šé•¿åº¦çš„æ•°æ®ï¼Œå…·æœ‰è‡ªåŠ¨æ¢é¡µåŠŸèƒ½ï¼Œä½†æ˜¯è¦ç¡®ä¿åœ°å€ä¸è¶Šç•Œ
+// å‚æ•°ï¼šå¼€å§‹å†™å…¥çš„åœ°å€(24bit)ï¼Œæ•°æ®å­˜å‚¨åŒºï¼Œè¦å†™å…¥çš„å­—èŠ‚æ•°(æœ€å¤§65535)
 void SPI_Flash_Write(uint32_t WriteAddr, const void *WriteBuffer, uint16_t NumByteToWrite)
 {
     const uint8_t *pBuffer = WriteBuffer;
     uint16_t pageremain;
 
-    pageremain = 256 - WriteAddr % 256; //µ¥Ò³Ê£ÓàµÄ×Ö½ÚÊı
+    pageremain = 256 - WriteAddr % 256; //å•é¡µå‰©ä½™çš„å­—èŠ‚æ•°
     if (NumByteToWrite <= pageremain) {
-        pageremain = NumByteToWrite;    //²»´óÓÚ256¸ö×Ö½Ú
+        pageremain = NumByteToWrite;    //ä¸å¤§äº256ä¸ªå­—èŠ‚
     }
 
     while (1) {
         SPI_Flash_Write_Page(WriteAddr, pBuffer, pageremain);
         if (NumByteToWrite == pageremain) {
-            break;    //Ğ´Èë½áÊø
+            break;    //å†™å…¥ç»“æŸ
         } else {
             pBuffer += pageremain;
             WriteAddr += pageremain;
-            NumByteToWrite -= pageremain;       // ¼õÈ¥ÒÑ¾­Ğ´ÈëµÄ×Ö½ÚÊı
+            NumByteToWrite -= pageremain;       // å‡å»å·²ç»å†™å…¥çš„å­—èŠ‚æ•°
             if (NumByteToWrite > 256) {
-                pageremain = 256;               // Ò»´Î¿ÉÒÔĞ´Èë256¸ö×Ö½Ú
+                pageremain = 256;               // ä¸€æ¬¡å¯ä»¥å†™å…¥256ä¸ªå­—èŠ‚
             } else {
-                pageremain = NumByteToWrite;    // ²»¹»256¸ö×Ö½Ú
+                pageremain = NumByteToWrite;    // ä¸å¤Ÿ256ä¸ªå­—èŠ‚
             }
         }
     }
@@ -535,13 +535,13 @@ uint8_t SPI_Flash_ReadStatus(void)
     return Flash_Status;
 }
 
-// ÆôÓÃËùÓĞ¿éĞ´±£»¤
+// å¯ç”¨æ‰€æœ‰å—å†™ä¿æŠ¤
 void SPI_Flash_ProtectionEnable(void)
 {
     SPI_Flash_WriteStatus(0x3c);
 }
 
-// ½ûÓÃËùÓĞ¿éĞ´±£»¤
+// ç¦ç”¨æ‰€æœ‰å—å†™ä¿æŠ¤
 void SPI_Flash_ProtectionDisable(void)
 {
     SPI_Flash_WriteStatus(0x00);

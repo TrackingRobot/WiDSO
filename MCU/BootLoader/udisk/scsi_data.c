@@ -79,7 +79,7 @@ uint8_t Standard_Inquiry_Data2[] = {
 uint8_t Mode_Sense6_data[] = {
     0x03,
     0x00,
-    0x00, //0x80Ϊд����
+    0x00, //0x80ÎªÐ´±£»¤
     0x00,
 };
 

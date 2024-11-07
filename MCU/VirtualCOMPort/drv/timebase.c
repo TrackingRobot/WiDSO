@@ -38,7 +38,7 @@ static volatile uint32_t s_system_up_ms = 0;
 
 /*-----------------------------------*/
 
-// SysTickÖĞ¶Ï
+// SysTickä¸­æ–­
 void SysTick_Handler(void)
 {
     s_system_up_ms++;
@@ -46,16 +46,16 @@ void SysTick_Handler(void)
 
 /*-----------------------------------*/
 
-// ³õÊ¼»¯
+// åˆå§‹åŒ–
 void timebase_init(void)
 {
-    // 1usÊ±ÖÓÊı
+    // 1usæ—¶é’Ÿæ•°
     s_us_ticks = SystemCoreClock / 1000000;
-    // 1msÊ±ÖÓÊı
+    // 1msæ—¶é’Ÿæ•°
     s_ms_ticks = SystemCoreClock / 1000;
-    // 1msÊ±»ùÖĞ¶Ï
+    // 1msæ—¶åŸºä¸­æ–­
     SysTick_Config(s_ms_ticks);
-    // Ìá¸ßÖĞ¶ÏÓÅÏÈ¼¶£¬±ÜÃâÔÚÆäËüÖĞ¶ÏÖĞµ÷ÓÃÊ±¼ÆÊ±³ö´í
+    // æé«˜ä¸­æ–­ä¼˜å…ˆçº§ï¼Œé¿å…åœ¨å…¶å®ƒä¸­æ–­ä¸­è°ƒç”¨æ—¶è®¡æ—¶å‡ºé”™
     NVIC_SetPriority(SysTick_IRQn, 0);
 }
 
@@ -67,7 +67,7 @@ uint32_t ticks(void)
     return SysTick->VAL;
 }
 
-// ·µ»ØÏµÍ³Æô¶¯usÊı (70·ÖÖÓÒç³ö)
+// è¿”å›ç³»ç»Ÿå¯åŠ¨usæ•° (70åˆ†é’Ÿæº¢å‡º)
 uint32_t micros(void)
 {
     register uint32_t ms, cycle_cnt;
@@ -80,7 +80,7 @@ uint32_t micros(void)
     return (ms * 1000) + (s_ms_ticks - cycle_cnt) / s_us_ticks;
 }
 
-// ·µ»ØÏµÍ³Æô¶¯ºÁÃëÊı (49ÌìÒç³ö)
+// è¿”å›ç³»ç»Ÿå¯åŠ¨æ¯«ç§’æ•° (49å¤©æº¢å‡º)
 uint32_t millis(void)
 {
     return s_system_up_ms;
@@ -88,7 +88,7 @@ uint32_t millis(void)
 
 /*-----------------------------------*/
 
-// us¼¶ÑÓÊ±
+// usçº§å»¶æ—¶
 void delay_us(uint32_t us)
 {
     uint32_t now = micros();
@@ -96,7 +96,7 @@ void delay_us(uint32_t us)
     while (micros() - now < us);
 }
 
-// ms¼¶ÑÓÊ±
+// msçº§å»¶æ—¶
 void delay_ms(uint32_t ms)
 {
     while (ms--) {

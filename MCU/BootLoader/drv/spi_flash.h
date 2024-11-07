@@ -3,33 +3,33 @@
 
 #include "base.h"
 
-// ¶¨ÒåÆ÷¼þÀàÐÍ
+// å®šä¹‰å™¨ä»¶ç±»åž‹
 //#define SPI_FLASH_SST25
 #define SPI_FLASH_W25
 
-// ¶¨ÒåÆ÷¼þÐÍºÅ
+// å®šä¹‰å™¨ä»¶åž‹å·
 //#define SPI_FLASH_SST25VF016B
 #define SPI_FLASH_W25Q64BV
 //#define SPI_FLASH_W25X40BV
 
-// Æ÷¼þÐÅÏ¢
+// å™¨ä»¶ä¿¡æ¯
 #ifdef SPI_FLASH_SST25VF016B
 #define SPI_FLASH_JEDEC_ID              0xBF2541
-// Falsh¿é´óÐ¡ºÍ¸öÊý£¬2M=4k*512
+// Falshå—å¤§å°å’Œä¸ªæ•°ï¼Œ2M=4k*512
 #define SPI_FLASH_SECTOR_SIZE           4096
 #define SPI_FLASH_SECTOR_COUNT          512
 #endif //SPI_FLASH_SST25VF016B
 
 #ifdef SPI_FLASH_W25Q64BV
 #define SPI_FLASH_JEDEC_ID              0xEF4017
-// Falsh¿é´óÐ¡ºÍ¸öÊý£¬8M=4k*2048
+// Falshå—å¤§å°å’Œä¸ªæ•°ï¼Œ8M=4k*2048
 #define SPI_FLASH_SECTOR_SIZE           4096
 #define SPI_FLASH_SECTOR_COUNT          2048
 #endif // SPI_FLASH_W25Q64BV
 
 #ifdef SPI_FLASH_W25X40BV
 #define SPI_FLASH_JEDEC_ID              0xEF3013
-// Falsh¿é´óÐ¡ºÍ¸öÊý£¬512k=4k*128
+// Falshå—å¤§å°å’Œä¸ªæ•°ï¼Œ512k=4k*128
 #define SPI_FLASH_SECTOR_SIZE           4096
 #define SPI_FLASH_SECTOR_COUNT          128
 #endif // SPI_FLASH_W25X40BV

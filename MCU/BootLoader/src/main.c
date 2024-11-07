@@ -1,5 +1,5 @@
 /*
- * MiCore���İ�USB BootLoader for stm32f103c8
+ * MiCore核心板USB BootLoader for stm32f103c8
  * eleqian 2014-9-12
  */
 
@@ -14,70 +14,70 @@ uint8_t gDiskWriteProtect[MAX_LUN] = {0};
 
 /*-----------------------------------*/
 
-// Ӧ�ó��������ʼ��ַ
+// 应用程序代码起始地址
 #define FLASH_APP_ADDR      INTER_FLASH_BASE_ADDR
-// FLASHҳ��С��STM32F103C8T6��Ϊ1K��
+// FLASH页大小（STM32F103C8T6的为1K）
 #define FLASH_PAGE_SIZE     INTER_FLASH_PAGE_SIZE
 
 typedef void (*pAppMain_t)(void);
 
-// �ж��Ƿ����IAPģʽ
+// 判断是否进入IAP模式
 BOOL IAP_Check(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     BOOL isInto = FALSE;
 
-    // �򿪰����˿�ʱ��
+    // 打开按键端口时钟
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
     GPIO_DeInit(GPIOC);
     
-    // ��ʼ��KEY�˿�(PC13)
+    // 初始化KEY端口(PC13)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
     
     delay_ms(10);
 
-    // KEY����ʱΪ�͵�ƽ
+    // KEY按下时为低电平
     isInto = !GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
 
-    // ��λ�����˿�״̬
+    // 复位按键端口状态
     GPIO_DeInit(GPIOC);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, DISABLE);
 
     return isInto;
 }
 
-// ����Ӧ�ô���
-// ����ɹ������򱾺��������˳���ʧ��ʱ�᷵��
+// 载入应用代码
+// 如果成功载入则本函数不会退出，失败时会返回
 void IAP_LoadApp(void)
 {
     pAppMain_t pAppMain;
     uint32_t JumpAddress;
 
-    // ���ջ����ַ�Ƿ�Ϸ�
+    // 检测栈顶地址是否合法
     if (((*(__IO uint32_t *)FLASH_APP_ADDR) & 0x2FFE0000) == 0x20000000) {
-        // ��ת���û�Ӧ�ô�����
+        // 跳转到用户应用代码区
         JumpAddress = *(__IO uint32_t *)(FLASH_APP_ADDR + 4);
         pAppMain = (pAppMain_t)JumpAddress;
-        // ��ʼ���û�Ӧ�ó���Ķ�ջָ��
+        // 初始化用户应用程序的堆栈指针
         __set_MSP(*(__IO uint32_t *)FLASH_APP_ADDR);
         pAppMain();
     }
 }
 
-// ִ��IAP
+// 执行IAP
 void IAP_Update(void)
 {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-    // ��JTAG����ʹ��SWD
+    // 关JTAG，仅使用SWD
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
     LED_Init();
 
-    // ��˸LED��ʾ���ȴ�����USB����IAPģʽ
+    // 闪烁LED提示并等待插入USB进入IAP模式
     USB_SetSystem();
     USB_SetClock();
     //USB_Led_Config();
@@ -95,17 +95,17 @@ void IAP_Update(void)
 
 /*-----------------------------------*/
 
-// ������
+// 主函数
 int main(void)
 {
     TimeBase_Init();
     
     if (!IAP_Check()) {
-        // ����Ӧ�ó���
+        // 载入应用程序
         IAP_LoadApp();
     }
     
-    // ����IAPģʽ
+    // 进入IAP模式
     IAP_Update();
 
     while (1) {

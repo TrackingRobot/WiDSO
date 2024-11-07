@@ -1,6 +1,6 @@
 /*
- * LEDÇı¶¯Ä£¿é
- * LEDÒı½Å PA8
+ * LEDé©±åŠ¨æ¨¡å—
+ * LEDå¼•è„š PA8
  * eleqian 2016-10-7
  */
 
@@ -8,39 +8,39 @@
 #include "timebase.h"
 #include "led.h"
 
-// LEDÄ£Ê½Ã¶¾Ù
+// LEDæ¨¡å¼æšä¸¾
 enum {
-    LED_MODE_NORMAL,    // ÆÕÍ¨Ä£Ê½£¨ÁÁ/Ãğ£©
-    LED_MODE_FLASH,     // ÉÁË¸Ä£Ê½
+    LED_MODE_NORMAL,    // æ™®é€šæ¨¡å¼ï¼ˆäº®/ç­ï¼‰
+    LED_MODE_FLASH,     // é—ªçƒæ¨¡å¼
 
     LED_MODE_MAX
 } LED_Mode;
 
-// LEDÄ£Ê½
+// LEDæ¨¡å¼
 static uint8_t gLEDMode;
 
-// ÉÏ´Î¸üĞÂÊ±¼ä(ms)
+// ä¸Šæ¬¡æ›´æ–°æ—¶é—´(ms)
 static uint32_t gLEDLastTime;
 
-// LED¼ÆÊ±(ms)
+// LEDè®¡æ—¶(ms)
 static uint16_t gLEDTimer;
 
-// LEDÉÁË¸ÖÜÆÚ(ms)
+// LEDé—ªçƒå‘¨æœŸ(ms)
 static uint16_t gLEDPeriod;
 
-// LEDÃ¿ÉÁË¸ÖÜÆÚµãÁÁÊ±¼ä(ms)
+// LEDæ¯é—ªçƒå‘¨æœŸç‚¹äº®æ—¶é—´(ms)
 static uint16_t gLEDPulse;
 
-// LEDÉÁË¸´ÎÊı
+// LEDé—ªçƒæ¬¡æ•°
 static uint16_t gLEDCycleCnt;
 
 /*-----------------------------------*/
 
-// ¿ª/¹ØLED
+// å¼€/å…³LED
 #define LED_ON()        GPIO_SetBits(GPIOA, GPIO_Pin_8)
 #define LED_OFF()       GPIO_ResetBits(GPIOA, GPIO_Pin_8)
 
-// LED¶Ë¿Ú³õÊ¼»¯
+// LEDç«¯å£åˆå§‹åŒ–
 static void LED_GPIOConfig(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -56,7 +56,7 @@ static void LED_GPIOConfig(void)
 
 /*-----------------------------------*/
 
-// LED³õÊ¼»¯
+// LEDåˆå§‹åŒ–
 void LED_Init(void)
 {
     LED_GPIOConfig();
@@ -66,7 +66,7 @@ void LED_Init(void)
     gLEDMode = LED_MODE_NORMAL;
 }
 
-// LED¿ª¹Ø
+// LEDå¼€å…³
 void LED_Light(BOOL isLight)
 {
     gLEDMode = LED_MODE_NORMAL;
@@ -77,8 +77,8 @@ void LED_Light(BOOL isLight)
     }
 }
 
-// LEDÉÁË¸
-// ²ÎÊı£ºÖÜÆÚ(ms)£¬µãÁÁÊ±¼ä(ms)£¬ÉÁË¸´ÎÊı(=0Ê±Ò»Ö±ÉÁË¸)
+// LEDé—ªçƒ
+// å‚æ•°ï¼šå‘¨æœŸ(ms)ï¼Œç‚¹äº®æ—¶é—´(ms)ï¼Œé—ªçƒæ¬¡æ•°(=0æ—¶ä¸€ç›´é—ªçƒ)
 void LED_Flash(uint16_t period, uint16_t pulse, uint16_t cycles)
 {
     gLEDMode = LED_MODE_FLASH;
@@ -92,7 +92,7 @@ void LED_Flash(uint16_t period, uint16_t pulse, uint16_t cycles)
 
 /*-----------------------------------*/
 
-// LED¶¨Ê±ÈÎÎñ
+// LEDå®šæ—¶ä»»åŠ¡
 void LED_Exec(void)
 {
     uint32_t t;
